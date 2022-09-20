@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: sans-serif;
+  font-family: 18px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  padding-top: 2rem;
+}
+
+#game-board {
+  display: grid;
+  place-content: center1;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  width: 26.25rem;
+  padding-top: 2rem;
+  margin-inline: auto;
+}
+
+.square {
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  background-color: khaki;
+  border: 1px solid deepskyblue;
+  height: 8.75rem;
+}
