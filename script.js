@@ -37,22 +37,25 @@ const game = (() => {
   const boardElem = document.getElementById('game-board');
   const startBtn = document.getElementById('start-btn');
   const restartBtn = document.getElementById('restart-btn');
+  const squares = boardElem.getElementsByClassName('square');
 
   // events
-  startBtn.onclick = initGame;
+  startBtn.onclick = startGame;
+  restartBtn.onclick = restartGame;
   boardElem.addEventListener('click', addMark);
-  boardElem.addEventListener('click', () => {
-    patterns.forEach(item => checkPattern(currentPlayer.mark, item))
-  });
-  boardElem.addEventListener('click', changePlayer);
+  // boardElem.addEventListener('click', checkWinner);
+  // boardElem.addEventListener('click', changePlayer);
 
   // functions 
-  function initGame() {
+  function startGame() {
     // show board
     boardElem.style.display = 'grid';
 
     // show restart btn
     restartBtn.style.display = 'inline-block';
+
+    // hide start btn
+    startBtn.style.display = 'none';
 
     // assign players 
     playerX = Player('Player X', 'X');
@@ -62,6 +65,18 @@ const game = (() => {
     currentPlayer = playerX;
   };
 
+  function restartGame() {
+    const length = board.length;
+
+    // clear board array and div text
+    for(let i = 0; i < length; i++) {
+      board[i] = '';
+      squares[i].textContent = '';
+    }
+
+    currentPlayer = playerX;
+  }
+
   function addMark(event) {
     const square = event.target;
     const pos = square.getAttribute('data-pos');
@@ -70,8 +85,10 @@ const game = (() => {
     if(board[pos] || square.tagName !== 'DIV') return;
 
     square.textContent = mark;
-
     board[pos] = mark;
+    
+    changePlayer();
+    checkWinner(mark);
   }
 
   function changePlayer() {
@@ -83,10 +100,27 @@ const game = (() => {
     }
   }
 
-  const checkPattern = (mark, {pos1, pos2, pos3}) => {
-    if(board[pos1] === mark && board[pos2] === mark && board[pos3] === mark) {
+  function checkWinner(mark) {
+    patterns.forEach(item => {
+      const {pos1, pos2, pos3} = item;
+      if(board[pos1] === mark && board[pos2] === mark && board[pos3] === mark) {
       console.log(`${mark} winner`);
     }
+    });
   }
 
+  function displayWinner() {
+    
+  }
+
+  // const checkPattern = (mark, {pos1, pos2, pos3}) => {
+  //   if(board[pos1] === mark && board[pos2] === mark && board[pos3] === mark) {
+  //     console.log(`${mark} winner`);
+  //   }
+  // }
+
+  return {
+    board,
+    squares,
+  }
 })();
