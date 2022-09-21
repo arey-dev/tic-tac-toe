@@ -11,7 +11,7 @@
 
 body {
   font-family: sans-serif;
-  font-family: 18px;
+  font-size: 18px;
   line-height: 1.5;
   min-height: 100vh;
 }
@@ -23,11 +23,11 @@ h1 {
 
 #game-board {
   display: grid;
-  place-content: center1;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
   width: 26.25rem;
   padding-top: 2rem;
   margin-inline: auto;
+  margin-bottom: 1rem;
 }
 
 .square {
@@ -37,4 +37,27 @@ h1 {
   background-color: khaki;
   border: 1px solid deepskyblue;
   height: 8.75rem;
+  cursor: pointer;
+}
+
+
+#buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 26.25rem;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.button {
+  font: inherit;
+  width: 7rem;
+  background-color: rgb(80, 150, 255);
+  color: rgb(247, 241, 241);
+  border: 0;
+  border-radius: 0.2rem;
+  padding-block: 0.25rem;
+  margin-bottom: 1rem;
+  cursor: pointer
 }
