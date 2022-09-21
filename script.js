@@ -35,6 +35,7 @@ const game = (() => {
 
   // cache dom
   const boardElem = document.getElementById('game-board');
+  const displayElem = document.getElementById('display-container')
   const startBtn = document.getElementById('start-btn');
   const restartBtn = document.getElementById('restart-btn');
   const squares = boardElem.getElementsByClassName('square');
@@ -72,9 +73,14 @@ const game = (() => {
     for(let i = 0; i < length; i++) {
       board[i] = '';
       squares[i].textContent = '';
+      squares[i].style.color = '';
     }
 
-    currentPlayer = playerX;
+    currentPlayer = playerX; // reset player
+
+    displayElem.innerHTML = ''; // reset reulst
+
+    boardElem.addEventListener('click', addMark); // restore event listener
   }
 
   function addMark(event) {
@@ -82,13 +88,19 @@ const game = (() => {
     const pos = square.getAttribute('data-pos');
     const mark = currentPlayer.mark;
 
-    if(board[pos] || square.tagName !== 'DIV') return;
+    if(square.tagName !== 'DIV') return;
 
-    square.textContent = mark;
-    board[pos] = mark;
+    // return immediately if position
+    // in board array is not empty
+    if(board[pos]) return; 
+
+    square.textContent = mark;  // display mark on ui
+
+    board[pos] = mark;  // add mark to array
     
-    changePlayer();
     checkWinner(mark);
+
+    changePlayer(); // change player after adding mark
   }
 
   function changePlayer() {
@@ -101,26 +113,44 @@ const game = (() => {
   }
 
   function checkWinner(mark) {
+    let isDraw = true;
+
+    // check every pattern
     patterns.forEach(item => {
+      // destructure pattern object
       const {pos1, pos2, pos3} = item;
+
       if(board[pos1] === mark && board[pos2] === mark && board[pos3] === mark) {
-      console.log(`${mark} winner`);
-    }
+        // prevents from displaying draw if there's a winner,
+        // and all squares are taken
+        isDraw = false;
+
+        showResults(isDraw);
+
+        highlightSqaures(pos1, pos2, pos3);
+
+        // removes event listener after match
+        // after results are displayed
+        boardElem.removeEventListener('click', addMark); 
+      }
     });
+
+    // display draw if there's no winner,
+    // and all squares are taken
+    if(board.every(item => item !== '')) {
+      showResults(isDraw);
+    }
   }
 
-  function displayWinner() {
-    
+  // helper functions
+  function showResults(val) {
+    // if falsy argument is given, display 'tie' message;
+    displayElem.innerHTML = (val) ? 
+      "<p>It's a draw!!!</p>" : `<p>${currentPlayer.name} wins!!!</p>`;
   }
 
-  // const checkPattern = (mark, {pos1, pos2, pos3}) => {
-  //   if(board[pos1] === mark && board[pos2] === mark && board[pos3] === mark) {
-  //     console.log(`${mark} winner`);
-  //   }
-  // }
-
-  return {
-    board,
-    squares,
+  function highlightSqaures(pos1, pos2, pos3) {
+    // highlight the squares that match the pattern
+    [squares[pos1], squares[pos2], squares[pos3]].forEach(item => item.style.color = 'indigo');
   }
 })();
