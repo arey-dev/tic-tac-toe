@@ -22,11 +22,18 @@ h1 {
   margin-bottom: 2rem;
 }
 
+#game-board,
+#display-container,
+#buttons-container {
+  max-width: 20rem;
+  width: 100%;
+  margin-inline: auto;
+}
+
+
 #game-board {
   display: none;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-  width: 26.25rem;
-  margin-inline: auto;
   margin-bottom: 1rem;
 }
 
@@ -36,18 +43,21 @@ h1 {
   font-size: 2rem;
   background-color: khaki;
   border: 1px solid deepskyblue;
-  height: 8.75rem;
+  height: 7rem;
   cursor: pointer;
 }
 
+
+#display-container {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
 
 #buttons-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 26.25rem;
-  width: 100%;
-  margin-inline: auto;
 }
 
 .button {
